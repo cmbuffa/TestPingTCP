@@ -22,44 +22,13 @@ namespace TestPingTCP
 
         static int Ping()
         {
-            //try
-            //{
-            //    var socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            //    socket.Blocking = true;
-
-            //    IAsyncResult result = socket.BeginConnect("192.168.0.1", 443, null, null); //"pvalue-dev.auth0.com"
-
-            //    bool success = result.AsyncWaitHandle.WaitOne(300, true);
-
-            //    if (!success)
-            //    {
-            //        socket.Close();
-            //        Console.WriteLine("timeout");
-            //        return 400;
-            //    }
-
-            //    if(socket.Connected)
-            //    {
-            //        socket.EndConnect(result);
-            //    }
-
-            //    return 200;
-            //}
-            //catch(SocketException se)
-            //{
-            //    Console.WriteLine(se.Message);
-            //    return 400;
-            //}
-
             try
             {
-                var uri = new UriBuilder("https", "stackoverflow.com").Uri;
+                string hostName = "stackoverflow.com";
                 var socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 socket.Blocking = true;
 
-                IAsyncResult result = socket.BeginConnect(uri.Host, 443, null, null); //"pvalue-dev.auth0.com"
-
-                bool success = result.AsyncWaitHandle.WaitOne(300, true);
+                socket.BeginConnect(hostName, 443, null, null).AsyncWaitHandle.WaitOne(300, true);  //"pvalue-dev.auth0.com"
 
                 if (!socket.Connected)
                 {
@@ -91,12 +60,12 @@ namespace TestPingTCP
                 Console.WriteLine(re.Message);
                 return 400;
             }
-            catch (InvalidOperationException iop)
+            catch(InvalidOperationException iop)
             {
                 Console.WriteLine(iop.Message);
                 return 500;
             }
-            catch (UriFormatException ue)
+            catch(UriFormatException ue)
             {
                 Console.WriteLine(ue.Message);
                 return 400;
